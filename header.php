@@ -20,4 +20,5 @@
         <a href="#">Animais</a>
         <a href="#">Pop & Cultura</a>
         <a href="#">Contato</a>
+        <a href="login.php">Login</a>
     </nav>

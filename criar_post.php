@@ -1,3 +1,32 @@
+<?php
+include 'conexao.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $titulo = $_POST["post-title"];
+    $subtitulo = $_POST["post-subtitle"];
+    $conteudo = $_POST["post-content"];
+
+    // Upload da imagem
+    $imagem = "";
+    if (!empty($_FILES["post-image"]["name"])) {
+        $nomeImagem = basename($_FILES["post-image"]["name"]);
+        $caminho = "Img/" . $nomeImagem;
+        move_uploaded_file($_FILES["post-image"]["tmp_name"], $caminho);
+        $imagem = $caminho;
+    }
+
+    $sql = "INSERT INTO posts (titulo, subtitulo, conteudo, imagem) 
+            VALUES ('$titulo', '$subtitulo', '$conteudo', '$imagem')";
+
+    if ($conn->query($sql) === TRUE) {
+        header("Location: index.php");
+        exit;
+    } else {
+        echo "Erro ao salvar: " . $conn->error;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
