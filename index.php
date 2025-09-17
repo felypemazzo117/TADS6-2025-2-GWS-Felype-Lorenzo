@@ -11,16 +11,24 @@
     <header>
         <h1>🗞️ Notícias Inúteis</h1>
         <p>O portal que informa sem transformar sua vida</p>
+   
+        <nav>
+            <a href="index.php">Início</a>
+            <a href="#">Curiosidades</a>
+            <a href="#">Animais</a>
+            <a href="#">Pop & Cultura</a>
+            <a href="#">Contato</a>
+            
+            <?php session_start(); ?>
+            <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
+                <a href="painel.php">Painel Admin</a>
+                <a href="logout.php">Sair</a>
+            <?php else: ?>
+                <a href="login.php">Login</a>
+            <?php endif; ?>
+        </nav>
     </header>
-
-    <nav>
-        <a href="index.php">Início</a>
-        <a href="#">Curiosidades</a>
-        <a href="#">Animais</a>
-        <a href="#">Pop & Cultura</a>
-        <a href="#">Contato</a>
-    </nav>
-
+    
     <section class="hero">
         <h2>Última Inútil: Cientistas descobrem que tartarugas gostam de jazz</h2>
         <p>Segundo um estudo que ninguém pediu, tartarugas respondem melhor a Miles Davis do que a Beethoven.</p>
