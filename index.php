@@ -113,7 +113,7 @@ session_start();
     </section>
 
     <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
-        <a href="criar-post.php" class="btn-fixed">Cria Post</a>
+        <a href="criar-post.php" class="btn-fixed">Criar Post</a>
     <?php endif; ?>
 
     <footer>

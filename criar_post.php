@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <nav>
         <a href="index.php">Início</a>
-        <a href="criar-post.php">Cria Post</a>
+        <a href="criar_post.php">Criar Post</a>
     </nav>
 <main class="post-form-container">
     <h2>Criar um Novo Post</h2>

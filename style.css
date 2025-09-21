@@ -244,11 +244,13 @@ footer {
 }
 
 .login-container {
-  display: flex;
+    display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* mantém o topo alinhado */
+  gap: 20px; /* espaço entre as caixas */
   padding: 60px 20px;
   background-color: #f0f4f8;
+
 }
 
 .login-box {
@@ -259,6 +261,12 @@ footer {
   max-width: 400px;
   width: 100%;
   text-align: center;
+  min-height: 420px; /* ajuste conforme necessário */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+
 }
 
 .login-box h2 {
@@ -303,6 +311,22 @@ footer {
 
 .btn-login:hover {
   background-color: #005fa3;
+}
+
+.signup-link {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.signup-link a {
+  color: #0077cc;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
 }
 
 .erro-msg {
