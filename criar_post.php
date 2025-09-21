@@ -10,7 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $imagem = "";
     if (!empty($_FILES["post-image"]["name"])) {
         $nomeImagem = basename($_FILES["post-image"]["name"]);
-        $caminho = "Img/" . $nomeImagem;
+        // A pasta de destino foi alterada de "Img/" para "img/"
+        $caminho = "img/" . $nomeImagem;
         move_uploaded_file($_FILES["post-image"]["tmp_name"], $caminho);
         $imagem = $caminho;
     }
@@ -45,10 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <nav>
         <a href="index.php">Início</a>
         <a href="criar-post.php">Cria Post</a>
-        <a href="#">Curiosidades</a>
-        <a href="#">Animais</a>
-        <a href="#">Pop & Cultura</a>
-        <a href="#">Contato</a>
     </nav>
 <main class="post-form-container">
     <h2>Criar um Novo Post</h2>
@@ -77,8 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 </main>
 <footer>
-        <p>© 2025 Notícias Inúteis — IFPR Telêmaco Borba</p>
-    </footer>
+    <p>© 2025 Notícias Inúteis — IFPR Telêmaco Borba</p>
+</footer>
 
 </body>
 </html>
