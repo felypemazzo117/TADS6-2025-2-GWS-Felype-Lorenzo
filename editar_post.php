@@ -59,7 +59,15 @@ $conn->close();
 
     <nav>
         <a href="index.php">Início</a>
-        <a href="criar_post.php">Criar Post</a>
+        <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
+            <a href="meuperfil.php">Meu Perfil</a>
+            <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+                <a href="gerenciar_posts.php">Gerenciar Posts</a>
+            <?php endif; ?>
+            <a href="logout.php">Sair</a>
+        <?php else: ?>
+            <a href="login.php">Login</a>
+        <?php endif; ?>
     </nav>
 
 <main class="post-form-container">
