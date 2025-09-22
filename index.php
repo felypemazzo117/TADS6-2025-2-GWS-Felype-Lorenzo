@@ -63,14 +63,16 @@ $conn->close();
         <?php endif; ?>
     </main>
 
-    <?php
-    $link_criar_post = (isset($_SESSION['logado']) && $_SESSION['logado'] === true) ? 'criar_post.php' : 'login.php';
-    ?>
-    <a href="<?= $link_criar_post ?>" class="btn-fixed">Criar Post</a>
-
     <footer>
         <p>© 2025 Notícias Inúteis — IFPR Telêmaco Borba</p>
     </footer>
+
+    <?php
+    $link_criar_post = (isset($_SESSION['logado']) && $_SESSION['logado'] === true) ? 'criar_post.php' : 'login.php';
+    ?>
+    <div class="btn-container">
+        <a href="<?= $link_criar_post ?>" class="btn-fixed">Criar Post</a>
+    </div>
 
 </body>
 </html>

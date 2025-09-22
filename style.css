@@ -572,3 +572,39 @@ footer {
 .opcoes-comentario a:hover {
     color: #c0392b;
 }
+/* ================================================= */
+/* Estilos para o contêiner do botão centralizado */
+/* ================================================= */
+.btn-fixed {
+    position: static !important; /* Força o elemento a seguir o fluxo normal */
+    bottom: auto !important;
+    right: auto !important;
+}
+
+/* Container para centralizar o botão */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centraliza verticalmente se o contêiner tiver altura */
+    width: 100%;
+    padding: 20px 0; /* Adiciona um espaço acima e abaixo do botão */
+    margin-top: 20px; /* Adiciona um espaço entre o rodapé e o botão */
+}
+
+.btn-fixed {
+    text-decoration: none;
+    background-color: #e74c3c;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-fixed:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
