@@ -1,30 +1,83 @@
 <?php
+session_start();
 include 'conexao.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $titulo = $_POST["post-title"];
-    $subtitulo = $_POST["post-subtitle"];
-    $conteudo = $_POST["post-content"];
+// Redireciona se o usuário não estiver logado
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+    header("Location: login.php");
+    exit;
+}
 
-    // Upload da imagem
-    $imagem = "";
-    if (!empty($_FILES["post-image"]["name"])) {
-        $nomeImagem = basename($_FILES["post-image"]["name"]);
-        // A pasta de destino foi alterada de "Img/" para "img/"
-        $caminho = "img/" . $nomeImagem;
-        move_uploaded_file($_FILES["post-image"]["tmp_name"], $caminho);
-        $imagem = $caminho;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $titulo = trim($_POST["post-title"] ?? '');
+    $subtitulo = trim($_POST["post-subtitle"] ?? '');
+    $conteudo = trim($_POST["post-content"] ?? '');
+
+    if (empty($titulo) || empty($conteudo)) {
+        echo "Título e conteúdo do post são obrigatórios.";
+        exit;
     }
 
-    $sql = "INSERT INTO posts (titulo, subtitulo, conteudo, imagem) 
-            VALUES ('$titulo', '$subtitulo', '$conteudo', '$imagem')";
+    // --- LÓGICA CORRIGIDA: VERIFICA E GARANTE O ID DO AUTOR NA TABELA 'USUARIO' ---
+    $id_autor = $_SESSION['usuario_id'];
+    $email_autor = $_SESSION['usuario_email'];
+    
+    // Se o usuário logado for um admin, vamos garantir que ele tenha um registro na tabela 'usuario'
+    if ($_SESSION['is_admin'] === true) {
+        $sql_verifica_usuario = "SELECT id_usuario FROM usuario WHERE email = ?";
+        $stmt_verifica = $conn->prepare($sql_verifica_usuario);
+        $stmt_verifica->bind_param("s", $email_autor);
+        $stmt_verifica->execute();
+        $resultado_verifica = $stmt_verifica->get_result();
 
-    if ($conn->query($sql) === TRUE) {
+        if ($resultado_verifica->num_rows === 0) {
+            // Se o admin não tem uma conta de usuário comum, vamos criar uma
+            $sql_insere_usuario = "INSERT INTO usuario (email, senha) VALUES (?, ?)";
+            $stmt_insere = $conn->prepare($sql_insere_usuario);
+            // Para a senha, podemos usar uma string qualquer, já que a autenticação dele é feita pela tabela 'admin'
+            $senha_placeholder = password_hash(uniqid(), PASSWORD_DEFAULT);
+            $stmt_insere->bind_param("ss", $email_autor, $senha_placeholder);
+            $stmt_insere->execute();
+            
+            $id_autor = $stmt_insere->insert_id;
+        } else {
+            // Se já tem, pega o ID de lá
+            $dados_usuario = $resultado_verifica->fetch_assoc();
+            $id_autor = $dados_usuario['id_usuario'];
+        }
+        $stmt_verifica->close();
+    }
+    // O $id_autor agora é o ID correto para a tabela `usuario`, seja para um usuário comum ou para um admin
+    
+    // Lógica para upload da imagem
+    $imagem = "";
+    if (isset($_FILES["post-image"]) && $_FILES["post-image"]["error"] == UPLOAD_ERR_OK) {
+        $nomeImagem = basename($_FILES["post-image"]["name"]);
+        $caminho = "img/" . uniqid() . "_" . $nomeImagem;
+        
+        if (move_uploaded_file($_FILES["post-image"]["tmp_name"], $caminho)) {
+            $imagem = $caminho;
+        } else {
+            echo "Erro no upload da imagem.";
+            exit;
+        }
+    }
+
+    // Usa prepared statement para inserir na tabela 'post'
+    $sql = "INSERT INTO post (id_usuario, titulo, subtitulo, conteudo_post, imagem) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    
+    $stmt->bind_param("issss", $id_autor, $titulo, $subtitulo, $conteudo, $imagem);
+    
+    if ($stmt->execute()) {
         header("Location: index.php");
         exit;
     } else {
-        echo "Erro ao salvar: " . $conn->error;
+        echo "Erro ao salvar: " . $stmt->error;
     }
+    
+    $stmt->close();
+    $conn->close();
 }
 ?>
 

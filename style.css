@@ -1,3 +1,6 @@
+/* ================================================= */
+/* ============== Estilos Globais ================== */
+/* ================================================= */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -10,11 +13,27 @@ body {
     color: #333;
 }
 
+/* ================================================= */
+/* ============== Estilos de Layout ================ */
+/* ================================================= */
+
+/* Header e Nav */
 header {
     background-color: #d40000;
     color: white;
     padding: 20px;
     text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 1.2em;
+    color: #eee;
+    font-style: italic;
 }
 
 nav {
@@ -29,77 +48,14 @@ nav a {
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
+    transition: color 0.3s ease;
 }
 
-.hero {
-    background-color: #fff;
-    padding: 30px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+nav a:hover {
+    color: #d40000;
 }
 
-.hero h2 {
-    font-size: 2em;
-    margin-bottom: 10px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.card {
-    background-color: white;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.card-content {
-    padding: 15px;
-}
-
-.card-content h3 {
-    margin-bottom: 10px;
-    font-size: 1.2em;
-}
-
-.card-content p {
-    font-size: 0.95em;
-    color: #555;
-}
-
-.btn-fixed {
-    position: fixed;
-    bottom: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #d40000;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 50px;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    z-index: 1000;
-    transition: background-color 0.3s ease;
-}
-
-.btn-fixed:hover {
-    background-color: #a30000;
-}
-
+/* Footer */
 footer {
     background-color: #d40000;
     color: white;
@@ -108,229 +64,511 @@ footer {
     margin-top: 30px;
 }
 
-/* Estilo para a página do formulário */
+/* ================================================= */
+/* =========== Estilos da Página Inicial =========== */
+/* ================================================= */
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content h3 {
+    font-size: 1.5em;
+    color: #c0392b;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.card-content h4 {
+    font-size: 1em;
+    color: #7f8c8d;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: normal;
+}
+
+.card-content p {
+    color: #34495e;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* ================================================= */
+/* =========== Estilos do Botão Fixado ============= */
+/* ================================================= */
+.btn-fixed {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #d40000;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+    z-index: 1000;
+}
+
+.btn-fixed:hover {
+    background-color: #a30000;
+}
+
+/* ================================================= */
+/* ============== Estilos de Formulários ============= */
+/* ================================================= */
+
+.form-box-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.form-box {
+    background-color: #fff;
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+}
+
+.form-box h2 {
+    font-size: 26px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-box p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.form-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-box label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    color: #444;
+}
+
+.form-box input[type="text"],
+.form-box input[type="password"],
+.form-box input[type="email"],
+.form-box textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    font-family: 'Roboto', sans-serif;
+    transition: border-color 0.3s;
+}
+
+.form-box input:focus,
+.form-box textarea:focus {
+    border-color: #d40000;
+    outline: none;
+}
+
+.form-box textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.btn-form {
+    background-color: #d40000;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-form:hover {
+    background-color: #a30000;
+}
+
+.signup-link {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+.signup-link a {
+    color: #d40000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+.erro-msg {
+    color: crimson;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+/* ================================================= */
+/* =========== Estilos da Página de Post ======== */
+/* ================================================= */
+
+.post-completo {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+}
+
+.post-titulo {
+    color: #c0392b;
+    font-size: 2.5em;
+    margin-bottom: 5px;
+}
+
+.post-subtitulo {
+    color: #888;
+    font-size: 1.2em;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.post-autor {
+    display: block;
+    color: #555;
+    font-size: 1em;
+    font-weight: bold;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.post-imagem {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-conteudo p {
+    color: #333;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+}
+
+/* ================================================= */
+/* =========== Estilos do Formulário de Post ======= */
+/* ================================================= */
+
 .post-form-container {
-    max-width: 900px; /* Aumentado para melhor layout */
+    max-width: 900px;
     margin: 50px auto;
-    padding: 30px 50px; /* Mais padding para espaçamento */
+    padding: 30px 50px;
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Sombra mais suave */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .post-form-container h2 {
-    text-align: left; /* Alinhado à esquerda como o resto do formulário */
-    color: #333; /* Cor mais suave */
+    text-align: left;
+    color: #333;
     margin-bottom: 5px;
-    font-size: 2.2em; /* Tamanho maior para o título principal */
+    font-size: 2.2em;
 }
 
 .post-form-container p {
-    text-align: left; /* Alinhado à esquerda */
-    color: #666; /* Cor mais suave */
-    margin-bottom: 30px; /* Mais espaço abaixo */
+    text-align: left;
+    color: #666;
+    margin-bottom: 30px;
     font-size: 1.1em;
 }
 
-/* Estilo do formulário em si */
-.post-form-container form {
-    display: grid; /* Usando Grid para o layout */
-    grid-template-columns: 1fr 1fr; /* Duas colunas */
-    gap: 20px; /* Espaçamento entre os elementos */
-    align-items: start; /* Alinha itens ao topo da célula */
-}
-
-/* Campos de texto e textarea */
 .post-form-container label {
     font-weight: bold;
     margin-bottom: 5px;
     color: #333;
-    display: block; /* Garante que a label ocupe sua própria linha */
+    display: block;
 }
 
 .post-form-container input[type="text"],
-.post-form-container textarea {
+.post-form-container textarea,
+.post-form-container input[type="file"] {
+    width: 100%;
     padding: 12px;
-    border: 1px solid #ddd; /* Borda mais clara */
-    border-radius: 5px; /* Bordas mais arredondadas */
+    border: 1px solid #ddd;
+    border-radius: 5px;
     font-family: 'Roboto', sans-serif;
     font-size: 1em;
-    width: 100%; /* Ocupa 100% da coluna */
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Sombra interna suave */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
     transition: border-color 0.3s ease;
 }
 
 .post-form-container input[type="text"]:focus,
 .post-form-container textarea:focus {
-    border-color: #d40000; /* Borda vermelha ao focar */
-    outline: none; /* Remove o contorno padrão */
+    border-color: #d40000;
+    outline: none;
 }
 
 .post-form-container textarea {
-    resize: vertical; /* Permite redimensionar apenas verticalmente */
-    min-height: 150px; /* Altura mínima para o campo de conteúdo */
-    grid-column: 1 / -1; /* Ocupa todas as colunas */
+    resize: vertical;
+    min-height: 150px;
 }
 
-/* Seções específicas da grid */
-.form-group-title {
-    grid-column: 1 / -1; /* Título ocupa todas as colunas */
-}
-
-.form-group-subtitle {
-    grid-column: 1 / -1; /* Subtítulo ocupa todas as colunas */
-}
-
-.form-group-image {
-    grid-column: 1 / -1; /* Imagem ocupa todas as colunas */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-/* Inputs de Título e Subtítulo */
-.post-form-container .form-title-group,
-.post-form-container .form-subtitle-group {
-    display: flex;
-    flex-direction: column;
-}
-
-
-/* Estilo para o campo de upload de imagem */
-.post-form-container input[type="file"] {
-    display: flex; /* Para controlar melhor o layout */
-    flex-direction: column;
-    padding: 10px 0;
-    margin-bottom: 20px;
-    font-size: 0.9em;
-    color: #555;
-}
-
-.post-form-container input[type="file"]::file-selector-button {
-    background-color: #d40000;
-    color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.post-form-container input[type="file"]::file-selector-button:hover {
-    background-color: #a30000;
-}
-
-
-/* Estilo do botão de envio */
 .btn-submit {
     background-color: #d40000;
     color: white;
     padding: 15px 25px;
     border: none;
-    border-radius: 5px; /* Bordas mais arredondadas */
+    border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     text-transform: uppercase;
     transition: background-color 0.3s ease;
-    margin-top: 20px;
-    grid-column: 1 / -1; /* Ocupa todas as colunas */
-    align-self: end; /* Alinha o botão ao final do grid-column */
+    align-self: flex-start;
 }
 
 .btn-submit:hover {
     background-color: #a30000;
 }
 
-.login-container {
+/* ================================================= */
+/* =========== Estilos de Perfil e Lista de Posts == */
+/* ================================================= */
+
+.perfil-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-info {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.perfil-info h2 {
+    color: #c0392b;
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.perfil-info p {
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.6;
+}
+
+.perfil-posts h2 {
+    color: #c0392b;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.lista-noticias {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-noticias li {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
-  justify-content: center;
-  align-items: flex-start; /* mantém o topo alinhado */
-  gap: 20px; /* espaço entre as caixas */
-  padding: 60px 20px;
-  background-color: #f0f4f8;
-
+    flex-direction: column;
+    gap: 10px;
 }
 
-.login-box {
-  background-color: #fff;
-  padding: 32px;
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-  min-height: 420px; /* ajuste conforme necessário */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-
-
+.lista-noticias li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.login-box h2 {
-  font-size: 26px;
-  margin-bottom: 10px;
-  color: #333;
+.lista-noticias li h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    font-size: 1.5em;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 10px;
 }
 
-.login-box p {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
+.lista-noticias li small {
+    color: #95a5a6;
+    font-style: italic;
+    margin-bottom: 5px;
 }
 
-.login-box label {
-  display: block;
-  text-align: left;
-  margin-bottom: 6px;
-  font-weight: bold;
-  color: #444;
+.lista-noticias li p {
+    color: #34495e;
+    line-height: 1.6;
+    margin-bottom: 15px;
 }
 
-.login-box input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+.lista-noticias li a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
 }
 
-.btn-login {
-  background-color: #0077cc;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s ease;
+.lista-noticias li a:hover {
+    color: #2980b9;
 }
 
-.btn-login:hover {
-  background-color: #005fa3;
+/* ================================================= */
+/* =========== Estilos dos Comentários ============= */
+/* ================================================= */
+.secao-comentarios {
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    padding-top: 30px;
 }
 
-.signup-link {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #555;
+.secao-comentarios h3 {
+    font-size: 1.8em;
+    color: #c0392b;
+    margin-bottom: 20px;
 }
 
-.signup-link a {
-  color: #0077cc;
-  text-decoration: none;
-  font-weight: bold;
+.form-comentario {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
 }
 
-.signup-link a:hover {
-  text-decoration: underline;
+.form-comentario textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    resize: vertical;
 }
 
-.erro-msg {
-  color: crimson;
-  font-weight: bold;
-  margin-bottom: 12px;
+.btn-comentar {
+    align-self: flex-end;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s;
+}
+
+.btn-comentar:hover {
+    background-color: #2980b9;
+}
+
+.aviso-login {
+    color: #888;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.lista-comentarios {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-comentarios li {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.conteudo-comentario {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.autor-comentario {
+    display: block;
+    font-size: 0.9em;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.nenhum-comentario {
+    color: #888;
+    font-style: italic;
+}
+
+.opcoes-comentario a {
+    color: #34495e;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: color 0.2s;
+}
+
+.opcoes-comentario a:hover {
+    color: #c0392b;
 }

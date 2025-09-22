@@ -6,17 +6,19 @@ $erro = '';
 $sucesso = '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nome = trim($_POST['nome'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $senha = trim($_POST['senha'] ?? '');
+    $confirma_senha = trim($_POST['confirma-senha'] ?? '');
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $erro = "E-mail inválido.";
     } elseif (strlen($senha) < 6) {
         $erro = "A senha deve ter pelo menos 6 caracteres.";
+    } elseif ($senha !== $confirma_senha) {
+        $erro = "As senhas não coincidem.";
     } else {
-        // Verifica se já existe
-        $sql = "SELECT id FROM usuarios WHERE email = ?";
+        // --- 1. VERIFICA SE O E-MAIL JÁ EXISTE ---
+        $sql = "SELECT id_usuario FROM usuario WHERE email = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('s', $email);
         $stmt->execute();
@@ -25,17 +27,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($resultado->num_rows > 0) {
             $erro = "Já existe uma conta com esse e-mail.";
         } else {
+            // --- 2. INSERE O NOVO USUÁRIO ---
             $hash = password_hash($senha, PASSWORD_DEFAULT);
-            $sql = "INSERT INTO usuarios (nome, email, senha, tipo) VALUES (?, ?, ?, 'usuario')";
+            $sql = "INSERT INTO usuario (email, senha) VALUES (?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sss', $nome, $email, $hash);
+            $stmt->bind_param('ss', $email, $hash);
 
             if ($stmt->execute()) {
-                $sucesso = "Conta criada com sucesso! Agora faça login.";
+                // Redireciona para a página de sucesso
+                header("Location: sucesso.php");
+                exit;
             } else {
-                $erro = "Erro ao criar conta.";
+                $erro = "Erro ao criar conta: " . $conn->error;
             }
-            
         }
     }
     $conn->close();
@@ -63,24 +67,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <p>Crie sua conta para participar do site.</p>
 
         <?php if (!empty($erro)) : ?>
-            <p class="erro-msg"><?= $erro ?></p>
-        <?php endif; ?>
-
-        <?php if (!empty($sucesso)) : ?>
-            <p class="sucesso-msg">
-                <?= $sucesso ?> <a href="login.php">Clique aqui para entrar</a>.
-            </p>
+            <p class="erro-msg"><?= htmlspecialchars($erro) ?></p>
         <?php endif; ?>
 
         <form method="post">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
-
             <label for="email">E-mail:</label>
             <input type="email" id="email" name="email" required>
 
             <label for="senha">Senha:</label>
             <input type="password" id="senha" name="senha" required>
+            
+            <label for="confirma-senha">Confirme a Senha:</label>
+            <input type="password" id="confirma-senha" name="confirma-senha" required>
 
             <button type="submit" class="btn-login">Cadastrar</button>
         </form>

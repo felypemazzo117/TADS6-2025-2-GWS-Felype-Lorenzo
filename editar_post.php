@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'conexao.php';
 
 // Verifica se um ID foi passado na URL
@@ -10,7 +11,8 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $id = $_GET['id'];
 
 // Prepara e executa a busca do post no banco de dados
-$stmt = $conn->prepare("SELECT titulo, subtitulo, conteudo, imagem FROM posts WHERE id = ?");
+// Nomes de tabela e coluna corrigidos: 'post', 'conteudo_post' e 'id_usuario'
+$stmt = $conn->prepare("SELECT id_usuario, titulo, subtitulo, conteudo_post, imagem FROM post WHERE id_post = ?");
 $stmt->bind_param("i", $id); // 'i' para tipo inteiro
 $stmt->execute();
 $result = $stmt->get_result();
@@ -21,7 +23,15 @@ if ($result->num_rows === 0) {
     exit;
 }
 
+// Verifica se o usuário logado é o autor do post ou um administrador
 $post = $result->fetch_assoc();
+if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    if (!isset($_SESSION['usuario_id']) || $post['id_usuario'] !== $_SESSION['usuario_id']) {
+        echo "Você não tem permissão para editar este post.";
+        exit;
+    }
+}
+
 $stmt->close();
 ?>
 
@@ -42,14 +52,14 @@ $stmt->close();
 
     <nav>
         <a href="index.php">Início</a>
-        <a href="criar-post.php">Cria Post</a>
+        <a href="criar_post.php">Criar Post</a>
     </nav>
 
 <main class="post-form-container">
     <h2>Editar Post</h2>
     <p>Altere as informações do post e salve as mudanças.</p>
     
-    <form action="processar-edicao.php" method="post" enctype="multipart/form-data">
+    <form action="processar_edicao.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="post-id" value="<?php echo htmlspecialchars($id); ?>">
         
         <div class="form-group-title">
@@ -63,7 +73,7 @@ $stmt->close();
         </div>
         
         <label for="post-content">Conteúdo do Post:</label>
-        <textarea id="post-content" name="post-content" rows="10" required><?php echo htmlspecialchars($post['conteudo']); ?></textarea>
+        <textarea id="post-content" name="post-content" rows="10" required><?php echo htmlspecialchars($post['conteudo_post']); ?></textarea>
 
         <?php if (!empty($post['imagem'])): ?>
             <div class="current-image">

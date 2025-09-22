@@ -2,7 +2,7 @@
 $host = "localhost";       // Servidor local
 $user = "root";            // Usuário padrão do XAMPP
 $senha = "";               // Senha padrão
-$banco = "BancoDdados";    // Nome do banco de dados
+$banco = "gws";    // Nome do banco de dados
 
 $conn = new mysqli($host, $user, $senha, $banco);
 
