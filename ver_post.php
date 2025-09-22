@@ -12,7 +12,7 @@ $id_post = $_GET['id'];
 $usuario_logado_id = $_SESSION['usuario_id'] ?? null;
 $is_admin = $_SESSION['is_admin'] ?? false;
 
-// 1. Busca os dados do post, do autor e da categoria
+// Busca os dados do post, do autor e da categoria
 $sql_post = "SELECT p.titulo, p.subtitulo, p.conteudo_post, p.imagem, u.email AS autor_email, p.id_usuario, c.nome_categoria
              FROM post p
              JOIN usuario u ON p.id_usuario = u.id_usuario
@@ -30,7 +30,7 @@ if ($resultado_post->num_rows === 0) {
 $post = $resultado_post->fetch_assoc();
 $stmt_post->close();
 
-// 2. Busca os comentários relacionados a este post
+// Busca os comentários relacionados a este post
 $sql_comentarios = "SELECT c.id_comentario, c.conteudo_comentario, c.id_usuario, u.email AS autor_comentario
                     FROM comentarios c
                     JOIN usuario u ON c.id_usuario = u.id_usuario

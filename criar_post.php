@@ -64,7 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Usa prepared statement para inserir na tabela 'post'
-    // AQUI ESTÁ A MUDANÇA PRINCIPAL: Adicionado 'id_categoria' na consulta SQL e na vinculação de parâmetros
     $sql = "INSERT INTO post (id_usuario, id_categoria, titulo, subtitulo, conteudo_post, imagem) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     

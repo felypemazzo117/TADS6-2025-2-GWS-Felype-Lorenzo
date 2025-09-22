@@ -12,7 +12,7 @@ $is_admin = $_SESSION['is_admin'] ?? false;
 $usuario_id = $_SESSION['usuario_id'];
 $usuario_email = $_SESSION['usuario_email'] ?? '';
 
-// 1. LÓGICA PARA BUSCAR OS POSTS
+// LÓGICA PARA BUSCAR OS POSTS
 if ($is_admin) {
     // Se for admin, busca todos os posts de todos os usuários
     // JOIN com a tabela 'usuario' para pegar o email do autor

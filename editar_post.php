@@ -10,7 +10,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id = $_GET['id'];
 
-// Prepara e executa a busca do post, incluindo a categoria
+// Prepara e executa a busca do post
 $stmt = $conn->prepare("SELECT id_usuario, titulo, subtitulo, conteudo_post, imagem, id_categoria FROM post WHERE id_post = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();

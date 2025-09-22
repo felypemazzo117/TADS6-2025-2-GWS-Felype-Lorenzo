@@ -19,7 +19,7 @@ $id_post = $_GET['id_post'];
 $usuario_logado_id = $_SESSION['usuario_id'];
 $is_admin = $_SESSION['is_admin'] ?? false;
 
-// 1. Busca o ID do autor do comentário
+//Busca o ID do autor do comentário
 $sql_verifica = "SELECT id_usuario FROM comentarios WHERE id_comentario = ?";
 $stmt_verifica = $conn->prepare($sql_verifica);
 $stmt_verifica->bind_param("i", $id_comentario);
@@ -34,17 +34,14 @@ if ($resultado_verifica->num_rows === 0) {
 $comentario = $resultado_verifica->fetch_assoc();
 $id_autor_do_comentario = $comentario['id_usuario'];
 
-// 2. Lógica de verificação de permissão
-// O usuário pode excluir se:
-// a) Ele é o autor do comentário (id_usuario do comentário é igual ao id do usuário logado)
-// OU
-// b) Ele é um administrador
+//Lógica de verificação de permissão
+
 if ($usuario_logado_id != $id_autor_do_comentario && $is_admin !== true) {
     echo "Você não tem permissão para excluir este comentário.";
     exit;
 }
 
-// 3. Exclusão do comentário
+// Exclusão do comentário
 $sql_excluir = "DELETE FROM comentarios WHERE id_comentario = ?";
 $stmt_excluir = $conn->prepare($sql_excluir);
 $stmt_excluir->bind_param("i", $id_comentario);

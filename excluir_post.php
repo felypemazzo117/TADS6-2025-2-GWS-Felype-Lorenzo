@@ -18,8 +18,8 @@ $id_post = $_GET['id'];
 $usuario_id = $_SESSION['usuario_id'];
 $is_admin = $_SESSION['is_admin'] ?? false;
 
-// 1. VERIFICAÇÃO DE PERMISSÃO:
-// Primeiro, busca o ID do autor do post para verificar se o usuário logado é o dono.
+// VERIFICAÇÃO DE PERMISSÃO:
+// busca o ID do autor do post para verificar se o usuário logado é o dono.
 $sql_verifica = "SELECT id_usuario FROM post WHERE id_post = ?";
 $stmt_verifica = $conn->prepare($sql_verifica);
 $stmt_verifica->bind_param("i", $id_post);
@@ -40,7 +40,7 @@ if ($usuario_id != $id_autor_do_post && $is_admin !== true) {
     exit;
 }
 
-// 2. EXCLUSÃO DO POST:
+// EXCLUSÃO DO POST:
 // Se a permissão for válida, executa a exclusão.
 $sql_excluir = "DELETE FROM post WHERE id_post = ?";
 $stmt_excluir = $conn->prepare($sql_excluir);
