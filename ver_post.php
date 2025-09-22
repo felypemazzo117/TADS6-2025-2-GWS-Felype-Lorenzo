@@ -12,10 +12,11 @@ $id_post = $_GET['id'];
 $usuario_logado_id = $_SESSION['usuario_id'] ?? null;
 $is_admin = $_SESSION['is_admin'] ?? false;
 
-// 1. Busca os dados do post e do autor
-$sql_post = "SELECT p.titulo, p.subtitulo, p.conteudo_post, p.imagem, u.email AS autor_email, p.id_usuario
+// 1. Busca os dados do post, do autor e da categoria
+$sql_post = "SELECT p.titulo, p.subtitulo, p.conteudo_post, p.imagem, u.email AS autor_email, p.id_usuario, c.nome_categoria
              FROM post p
              JOIN usuario u ON p.id_usuario = u.id_usuario
+             JOIN categorias c ON p.id_categoria = c.id_categoria
              WHERE p.id_post = ?";
 $stmt_post = $conn->prepare($sql_post);
 $stmt_post->bind_param("i", $id_post);
@@ -74,7 +75,10 @@ $conn->close();
         <article>
             <h2 class="post-titulo"><?= htmlspecialchars($post['titulo']) ?></h2>
             <h3 class="post-subtitulo"><?= htmlspecialchars($post['subtitulo']) ?></h3>
-            <small class="post-autor">Por: <?= htmlspecialchars($post['autor_email']) ?></small>
+            
+            <small class="post-autor">
+                Por: <?= htmlspecialchars($post['autor_email']) ?> | Categoria: <?= htmlspecialchars($post['nome_categoria']) ?>
+            </small>
             
             <?php if (!empty($post['imagem'])): ?>
                 <img src="<?= htmlspecialchars($post['imagem']) ?>" alt="<?= htmlspecialchars($post['titulo']) ?>" class="post-imagem">

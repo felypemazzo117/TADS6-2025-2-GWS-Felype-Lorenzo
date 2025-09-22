@@ -4,16 +4,15 @@ include 'conexao.php';
 
 // Verifica se um ID foi passado na URL
 if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header("Location: index.php"); // Redireciona se não houver ID
+    header("Location: index.php");
     exit;
 }
 
 $id = $_GET['id'];
 
-// Prepara e executa a busca do post no banco de dados
-// Nomes de tabela e coluna corrigidos: 'post', 'conteudo_post' e 'id_usuario'
-$stmt = $conn->prepare("SELECT id_usuario, titulo, subtitulo, conteudo_post, imagem FROM post WHERE id_post = ?");
-$stmt->bind_param("i", $id); // 'i' para tipo inteiro
+// Prepara e executa a busca do post, incluindo a categoria
+$stmt = $conn->prepare("SELECT id_usuario, titulo, subtitulo, conteudo_post, imagem, id_categoria FROM post WHERE id_post = ?");
+$stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -33,6 +32,14 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
 }
 
 $stmt->close();
+
+// Busca todas as categorias para o menu de seleção
+$sql_categorias = "SELECT id_categoria, nome_categoria FROM categorias ORDER BY nome_categoria";
+$stmt_categorias = $conn->prepare($sql_categorias);
+$stmt_categorias->execute();
+$resultado_categorias = $stmt_categorias->get_result();
+$conn->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -72,6 +79,17 @@ $stmt->close();
             <input type="text" id="post-subtitle" name="post-subtitle" value="<?php echo htmlspecialchars($post['subtitulo']); ?>">
         </div>
         
+        <div class="form-group-category">
+            <label for="post-category">Categoria:</label>
+            <select id="post-category" name="post-category" required>
+                <?php while ($categoria = $resultado_categorias->fetch_assoc()): ?>
+                    <option value="<?= $categoria['id_categoria'] ?>" <?= ($categoria['id_categoria'] == $post['id_categoria']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($categoria['nome_categoria']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+        </div>
+
         <label for="post-content">Conteúdo do Post:</label>
         <textarea id="post-content" name="post-content" rows="10" required><?php echo htmlspecialchars($post['conteudo_post']); ?></textarea>
 

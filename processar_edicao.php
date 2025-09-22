@@ -16,9 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $titulo = trim($_POST['post-title'] ?? '');
     $subtitulo = trim($_POST['post-subtitle'] ?? '');
     $conteudo = trim($_POST['post-content'] ?? '');
+    $id_categoria = $_POST['post-category'] ?? null; // Pega o ID da categoria do formulário
 
     // Verifica se os campos obrigatórios estão preenchidos
-    if (empty($id_post) || empty($titulo) || empty($conteudo)) {
+    if (empty($id_post) || empty($titulo) || empty($conteudo) || empty($id_categoria)) {
         header("Location: editar_post.php?id=$id_post&erro=Campos obrigatórios não preenchidos.");
         exit;
     }
@@ -56,13 +57,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Prepara a consulta SQL para atualizar o post
     if ($imagem_path) {
-        $sql_update = "UPDATE post SET titulo = ?, subtitulo = ?, conteudo_post = ?, imagem = ? WHERE id_post = ?";
+        $sql_update = "UPDATE post SET titulo = ?, subtitulo = ?, conteudo_post = ?, imagem = ?, id_categoria = ? WHERE id_post = ?";
         $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("ssssi", $titulo, $subtitulo, $conteudo, $imagem_path, $id_post);
+        $stmt_update->bind_param("ssssii", $titulo, $subtitulo, $conteudo, $imagem_path, $id_categoria, $id_post);
     } else {
-        $sql_update = "UPDATE post SET titulo = ?, subtitulo = ?, conteudo_post = ? WHERE id_post = ?";
+        $sql_update = "UPDATE post SET titulo = ?, subtitulo = ?, conteudo_post = ?, id_categoria = ? WHERE id_post = ?";
         $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("sssi", $titulo, $subtitulo, $conteudo, $id_post);
+        $stmt_update->bind_param("sssii", $titulo, $subtitulo, $conteudo, $id_categoria, $id_post);
     }
 
     if ($stmt_update->execute()) {
@@ -80,4 +81,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     header("Location: meuperfil.php");
     exit;
 }
-?>

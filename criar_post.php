@@ -8,22 +8,25 @@ if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
     exit;
 }
 
+// LÓGICA DE PROCESSAMENTO DO FORMULÁRIO
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titulo = trim($_POST["post-title"] ?? '');
     $subtitulo = trim($_POST["post-subtitle"] ?? '');
     $conteudo = trim($_POST["post-content"] ?? '');
-
-    if (empty($titulo) || empty($conteudo)) {
-        echo "Título e conteúdo do post são obrigatórios.";
+    $id_categoria = $_POST["post-category"] ?? null; // NOVO: Pega o ID da categoria
+    
+    // Verificação de campos obrigatórios
+    if (empty($titulo) || empty($conteudo) || empty($id_categoria)) {
+        echo "Título, conteúdo e categoria do post são obrigatórios.";
         exit;
     }
 
-    // --- LÓGICA CORRIGIDA: VERIFICA E GARANTE O ID DO AUTOR NA TABELA 'USUARIO' ---
-    $id_autor = $_SESSION['usuario_id'];
-    $email_autor = $_SESSION['usuario_email'];
+    // --- LÓGICA PARA OBTER O ID DO AUTOR ---
+    $id_autor = $_SESSION['usuario_id'] ?? null;
+    $email_autor = $_SESSION['usuario_email'] ?? null;
     
-    // Se o usuário logado for um admin, vamos garantir que ele tenha um registro na tabela 'usuario'
-    if ($_SESSION['is_admin'] === true) {
+    // Se o usuário logado for um admin, garante que ele tenha um registro na tabela 'usuario'
+    if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true) {
         $sql_verifica_usuario = "SELECT id_usuario FROM usuario WHERE email = ?";
         $stmt_verifica = $conn->prepare($sql_verifica_usuario);
         $stmt_verifica->bind_param("s", $email_autor);
@@ -34,11 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Se o admin não tem uma conta de usuário comum, vamos criar uma
             $sql_insere_usuario = "INSERT INTO usuario (email, senha) VALUES (?, ?)";
             $stmt_insere = $conn->prepare($sql_insere_usuario);
-            // Para a senha, podemos usar uma string qualquer, já que a autenticação dele é feita pela tabela 'admin'
             $senha_placeholder = password_hash(uniqid(), PASSWORD_DEFAULT);
             $stmt_insere->bind_param("ss", $email_autor, $senha_placeholder);
             $stmt_insere->execute();
-            
             $id_autor = $stmt_insere->insert_id;
         } else {
             // Se já tem, pega o ID de lá
@@ -47,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $stmt_verifica->close();
     }
-    // O $id_autor agora é o ID correto para a tabela `usuario`, seja para um usuário comum ou para um admin
     
     // Lógica para upload da imagem
     $imagem = "";
@@ -64,10 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Usa prepared statement para inserir na tabela 'post'
-    $sql = "INSERT INTO post (id_usuario, titulo, subtitulo, conteudo_post, imagem) VALUES (?, ?, ?, ?, ?)";
+    // AQUI ESTÁ A MUDANÇA PRINCIPAL: Adicionado 'id_categoria' na consulta SQL e na vinculação de parâmetros
+    $sql = "INSERT INTO post (id_usuario, id_categoria, titulo, subtitulo, conteudo_post, imagem) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     
-    $stmt->bind_param("issss", $id_autor, $titulo, $subtitulo, $conteudo, $imagem);
+    $stmt->bind_param("iissss", $id_autor, $id_categoria, $titulo, $subtitulo, $conteudo, $imagem);
     
     if ($stmt->execute()) {
         header("Location: index.php");
@@ -79,6 +80,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
     $conn->close();
 }
+
+// LÓGICA DE EXIBIÇÃO DO FORMULÁRIO
+// Adicionado código PHP para buscar as categorias do banco de dados
+$sql_categorias = "SELECT id_categoria, nome_categoria FROM categorias ORDER BY nome_categoria";
+$stmt_categorias = $conn->prepare($sql_categorias);
+$stmt_categorias->execute();
+$resultado_categorias = $stmt_categorias->get_result();
+
 ?>
 
 <!DOCTYPE html>
@@ -113,6 +122,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="form-group-subtitle">
             <label for="post-subtitle">Subtítulo (opcional):</label>
             <input type="text" id="post-subtitle" name="post-subtitle">
+        </div>
+        
+        <div class="form-group-category">
+            <label for="post-category">Categoria:</label>
+            <select id="post-category" name="post-category" required>
+                <?php while ($categoria = $resultado_categorias->fetch_assoc()): ?>
+                    <option value="<?= $categoria['id_categoria'] ?>">
+                        <?= htmlspecialchars($categoria['nome_categoria']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
         </div>
         
         <label for="post-content">Conteúdo do Post:</label>
